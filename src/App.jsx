@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import click from "./assets/click.mp3"
 import "./App.css"
 
 function App() {
@@ -10,7 +11,10 @@ function App() {
 
   const [piece1Pos, setPiece1Pos] = useState({ x: 0, y: 0 }) // Position lives here
   const [isDragging, setIsDragging] = useState(false)  // On and off switch for dragging
+  
   const targetPos = { x: 200, y: 200 }
+  const clickSound = new Audio(click) 
+
 
   function clamp(value, min, max) {  // guarantees the result is always between min and max
     if (value < min) return min // if too small return min
@@ -34,6 +38,7 @@ function App() {
           if (distanceX < 20 && distanceY < 20) {
             // if yes, snap it perfectly into place
             setPiece1Pos({ x: targetPos.x, y: targetPos.y })
+            clickSound.play()
           }
         }}
 

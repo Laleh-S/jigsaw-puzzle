@@ -14,6 +14,7 @@ function App() {
   
   const targetPos = { x: 200, y: 200 }
   const clickSound = new Audio(click) 
+  const startPos = { x: 0, y: 0 }
 
 
   function clamp(value, min, max) {  // guarantees the result is always between min and max
@@ -25,6 +26,13 @@ function App() {
   return (
     <div className="app">
       <h1>Jigsaw Puzzle</h1>
+      <button
+        onClick={() => {
+          setPiece1Pos({ x: startPos.x, y: startPos.y })
+        }}
+      >
+        Reset
+      </button>
       <div
         className="piece-container"
 

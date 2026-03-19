@@ -45,7 +45,10 @@ function App() {
         className="piece-container"
 
         onMouseUp={() => {  // stop dragging (mouse button comes up)
+          if (!isDragging) return  //  if not dragging, skip everything below like playing sound, check distance or snap and do nothing.
+
           setIsDragging(false)
+
           // Measure how far the piece is from the target (left/right) or (up/down)
           const distanceX = Math.abs(pieces[0].x - targetPos.x)
           const distanceY = Math.abs(pieces[0].y - targetPos.y)

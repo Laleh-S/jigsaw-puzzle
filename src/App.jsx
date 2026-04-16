@@ -1,7 +1,9 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 import click from "./assets/click.mp3"
 import "./App.css"
+
+// const clickSound = new Audio(click) 
 
 function App() {
   // initial state: the value you pass into useState(...) once at the beginning. { x: 0, y: 0 }
@@ -16,8 +18,21 @@ function App() {
   const [isDragging, setIsDragging] = useState(false)  // On and off switch for dragging
   
   const targetPos = { x: 200, y: 200 }
-  const clickSound = new Audio(click) 
   const startPos = { x: 0, y: 0 }
+  
+  // Create a ref object that does not get reset between renders
+  const clickSoundRef = useRef(null) // Initially, .current is set to null
+
+  // Check if we have NOT created the audio object yet
+  if (clickSoundRef.current === null) {
+
+  // On the first render: .current is null, so this condition is true
+
+  // Create a new Audio object and store it in .current
+  // Now .current is no longer null
+  clickSoundRef.current = new Audio(click)
+}
+// On future renders: .current already holds the Audio object So the condition is false, and we DO NOT create a new one
 
 
   function clamp(value, min, max) {  // guarantees the result is always between min and max
@@ -60,7 +75,7 @@ function App() {
               { ...pieces[0], x: targetPos.x, y: targetPos.y },
               pieces[1],
             ])
-            clickSound.play()
+            clickSoundRef.current?.play()
           }
         }}
 
@@ -74,7 +89,7 @@ function App() {
             const clampedX = clamp(nextX, 0, 220) // If nextX is less than 0, use 0. If nextX is more than 220, use 220. Otherwise use nextX. → keeps the piece inside horizontally.
             const clampedY = clamp(nextY, 0, 220) // Same, but for the vertical direction.
             setPieces([
-              { ...pieces[0], x: nextX, y: nextY },
+              { ...pieces[0], x: clampedX, y: clampedY },
               pieces[1],
             ])
           }
@@ -101,5 +116,3 @@ function App() {
   )
 }
 export default App
-
-
